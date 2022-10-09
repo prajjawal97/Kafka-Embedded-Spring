@@ -2,7 +2,7 @@
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 public class EmbeddedKafkaIntegrationTest {
-    private BankModel event = new BankModel(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "7703", 111, "12/05/2021", "Abid", "Khan", 10000d);
+    private BankModel event = new BankModel(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "7703", 112, "12/01/2021", "prajjawal", "Kansal", 10000d);
 
     @SpyBean
     private KafkaConsumerService consumer;
@@ -24,12 +24,10 @@ public class EmbeddedKafkaIntegrationTest {
 
         //Producer
         producer.send(event);
-
         //consumer
         verify(consumer, timeout(1000).times(1)).listen(BankModelArgumentCaptor.capture(),
                 topicArgumentCaptor.capture());
         List<BankModel> batchPayload = BankModelArgumentCaptor.getValue();
-        assertNotNull(batchPayload);
         assertThat(batchPayload.size(), equalTo(01));
         assertTrue(TOPIC_NAME.contains(topicArgumentCaptor.getValue()));
         testEvents(batchPayload);
