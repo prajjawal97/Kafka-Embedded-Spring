@@ -13,7 +13,7 @@ public class KafkaEmbeddedSpringApplication {
         String input = "I love my country";
         printEvenCharacters(input);
    	 }
-
+// Loop to print event without space
    	 private static void printEvenCharacters(String input) {
         for (int i = 0; i < input.length(); i += 2) {
             char character = input.charAt(i);
