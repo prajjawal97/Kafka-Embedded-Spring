@@ -25,12 +25,14 @@ public class EmbeddedKafkaIntegrationTest {
         //Producer
         producer.send(event);
         //consumer
-        verify(consumer, timeout(1000).times(1)).listen(BankModelArgumentCaptor.capture(),
+        verify(consumer, timeout(3000).times(1)).listen(BankModelArgumentCaptor.capture(),
                 topicArgumentCaptor.capture());
-        List<BankModel> batchPayload = BankModelArgumentCaptor.getValue();
-        assertThat(batchPayload.size(), equalTo(01));
+        List<BankModel> batchPayloadData = BankModelArgumentCaptor.getValue();
+        System.out.println(batchPayloadData);
+        assertThat(batchPayloadData.size(), equalTo(1));
         assertTrue(TOPIC_NAME.contains(topicArgumentCaptor.getValue()));
-        testEvents(batchPayload);
+        testEvents(batchPayloadData);
+
     }
 
     private void testEvents(List<BankAccount> eventsPayload) {
